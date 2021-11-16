@@ -1,111 +1,91 @@
 import pandas as pd
 import AdditonalFiles.db_connection as conn
 
+
 def sales_achiv_trend_data():
-    sales_trend_data = pd.read_sql_query("""
+    sales_achiv_trend_df = pd.read_sql_query("""
         DECLARE @YearMonth as VARCHAR(6) = Convert (varchar,Getdate()-1,112)
-        DECLARE @This_month as CHAR(6)= CONVERT(VARCHAR(6), GETDATE()-1, 112)
+    DECLARE @This_month as CHAR(6)= CONVERT(VARCHAR(6), GETDATE()-1, 112)
         DECLARE @FIRSTDATEOFMONTH AS CHAR(8) = CONVERT(VARCHAR(6), GETDATE()-1, 112)+'01'
         DECLARE @Today as CHAR(8) = CONVERT(VARCHAR(8), GETDATE(), 112)
         DECLARE @LastDay as CHAR(8) = CONVERT(VARCHAR(8), GETDATE(), 112)-1
         DECLARE @TotalDaysInMonth as Integer=(SELECT DATEDIFF(DAY, getdate()-1, DATEADD(MONTH, 1, getdate())))
         DECLARE @TotalDaysGone as integer =(select  count(distinct transdate) from OESalesSummery where left(transdate,6)=@This_month and  TRANSDATE<=@LastDay)
-
+                
         Select * from
         (Select
         FFTarget.FFTR,
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'LIGAZID' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [LIGAZID SALES ACHIV%],
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'LIGAZID' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [LIGAZID TREND%],
-
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'EMAZID' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [EMAZID SALES ACHIV%],
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'EMAZID' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [EMAZID TREND%],
-
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'LIPICON' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [LIPICON SALES ACHIV%],
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'LIPICON' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [LIPICON TREND%],
-
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'AGLIP' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [AGLIP SALES ACHIV%],
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'AGLIP' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [AGLIP TREND%],
-
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'CIFIBET' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [CIFIBET SALES ACHIV%],
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'CIFIBET' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [CIFIBET TREND%],
-
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'AMLEVO' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [AMLEVO SALES ACHIV%],
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'AMLEVO' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [AMLEVO TREND%],
-
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'CARDOBIS' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [CARDOBIS SALES ACHIV%],
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'CARDOBIS' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [CARDOBIS TREND%],
-
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'Rivarox' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [RIVAROX SALES ACHIV%],
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'Rivarox' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [RIVAROX TREND%],
-
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'NOCLOG' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [NOCLOG SALES ACHIV%],
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'NOCLOG' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [NOCLOG TREND%],
-
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'BEMPID' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [BEMPID SALES ACHIV%],
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'BEMPID' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [BEMPID TREND%],
-
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'AROTIDE' THEN (SalesAmount/TargetAmount)*100 END),0)) AS [AROTIDE SALES ACHIV%],
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'AROTIDE' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [AROTIDE TREND%],
-
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'FOBUNID' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [FOBUNID SALES ACHIV%],
-        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'Fobunid' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [FOBUNID TREND%]
-
-        from
-        (
-        Select 'RSM' AS FF, RSMTR as FFTR,BRAND, SUM(Amount) AS TargetAmount  from V_FF_Brand_Target
+        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.BRAND = 'OSTOCAL' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [OSTOCAL SALES ACHIV%],
+        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'OSTOCAL' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [OSTOCAL TREND%],
+        
+        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'SOLBION' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [SOLBION SALES ACHIV%],
+        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'SOLBION' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [SOLBION TREND%],
+        
+        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'XINC' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [XINC SALES ACHIV%],
+        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'XINC' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [XINC TREND%],
+                
+        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'LUMONA' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [LUMONA SALES ACHIV%],
+        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'LUMONA' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [LUMONA TREND%], 
+                
+        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'ROXIM' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [ROXIM SALES ACHIV%],
+        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'ROXIM' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [ROXIM TREND%], 
+                
+        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'KEFUCLAV' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [KEFUCLAV SALES ACHIV%],
+        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'KEFUCLAV' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [KEFUCLAV TREND%], 
+                
+        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'DEFCORT' THEN (SalesAmount/TargetAmount) *100 END),0)) AS [DEFCORT SALES ACHIV%],
+        Convert(decimal(18,2), isnull(Sum(Case when FFTarget.Brand = 'DEFCORT' THEN (SalesAmount/@TotalDaysGone*@TotalDaysInMonth)/TargetAmount *100 END),0)) AS [DEFCORT TREND%]
+                
+        from(
+        Select 'RSM' AS FF, RSMTR as FFTR,BRAND, SUM(Amount) AS TargetAmount  from V_FF_Brand_TargetAB
         group by RSMTR,BRAND
         union all
-        Select 'FM' AS FF, FMTR as FFTR,BRAND,SUM(Amount) AS TargetAmount  from V_FF_Brand_Target
+        Select 'FM' AS FF, FMTR as FFTR,BRAND,SUM(Amount) AS TargetAmount  from V_FF_Brand_TargetAB
         group by FMTR,BRAND
         union all
-        Select 'MSO' AS FF, MSOTR as FFTR,BRAND, SUM(Amount) AS TargetAmount  from V_FF_Brand_Target
+        Select 'MSO' AS FF, MSOTR as FFTR,BRAND, SUM(Amount) AS TargetAmount  from V_FF_Brand_TargetAB
         group by MSOTR,BRAND
         ) as FFTarget
         left join
         (
-        Select 'RSM' AS FF, left(MSOTR,3)  as FFTR,BRAND, SUM(extinvmisc) AS SalesAmount  from V_FF_Brand_Sales
+        Select 'RSM' AS FF, left(MSOTR,2)  as FFTR,BRAND, SUM(extinvmisc) AS SalesAmount  from V_FF_Brand_SalesAB
         where TRANSDATE <= @LastDay
-        group by left(MSOTR,3) ,BRAND
+        group by left(MSOTR,2) ,BRAND
         union all
-        Select 'FM' AS FF, left(MSOTR,4)+'0'  as FFTR,BRAND,SUM(extinvmisc) AS SalesAmount   from V_FF_Brand_Sales
+        Select 'FM' AS FF, FMTR as FFTR,BRAND,SUM(extinvmisc) AS SalesAmount  from V_FF_Brand_SalesAB
         where TRANSDATE <= @LastDay
-        group by left(MSOTR,4)+'0' ,BRAND
+        group by FMTR ,BRAND
         union all
-        Select 'MSO' AS FF, MSOTR as FFTR,BRAND, SUM(extinvmisc) AS SalesAmount   from V_FF_Brand_Sales
+        Select 'MSO' AS FF, MSOTR as FFTR,BRAND, SUM(extinvmisc) AS SalesAmount   from V_FF_Brand_SalesAB
         where TRANSDATE <= @LastDay
         group by MSOTR,BRAND
         ) as FFSales
         ON (FFTarget.FFTR=FFSales.FFTR) AND (FFTarget.BRAND=FFSales.BRAND)
+        WHERE FFTarget.FFTR IS NOT NULL
         group by FFTarget.FFTR
         ) as T1
-        order by FFTR asc
+        order by FFTR asc    
     """, conn.azure)
 
-    sales_trend_data.to_excel('./Data/SalesTrend/sales_achiv_trend_data.xlsx', index=False)
+    sales_achiv_trend_df.to_excel('./Data/SalesTrend/sales_achiv_trend_data.xlsx', index=False)
 
-    achivment_col = ['FFTR', 'LIGAZID SALES ACHIV%', 'EMAZID SALES ACHIV%', 'LIPICON SALES ACHIV%',
-                     'AGLIP SALES ACHIV%',
-                     'CIFIBET SALES ACHIV%', 'AMLEVO SALES ACHIV%', 'CARDOBIS SALES ACHIV%', 'RIVAROX SALES ACHIV%',
-                     'NOCLOG SALES ACHIV%', 'BEMPID SALES ACHIV%', 'AROTIDE SALES ACHIV%', 'FOBUNID SALES ACHIV%']
+    achivment_col = ['FFTR', 'OSTOCAL SALES ACHIV%', 'SOLBION SALES ACHIV%', 'XINC SALES ACHIV%',
+                     'LUMONA SALES ACHIV%', 'ROXIM SALES ACHIV%', 'KEFUCLAV SALES ACHIV%',
+                     'DEFCORT SALES ACHIV%']
 
-    trend_col = ['FFTR', 'LIGAZID TREND%', 'EMAZID TREND%', 'LIPICON TREND%', 'AGLIP TREND%', 'CIFIBET TREND%',
-                 'AMLEVO TREND%', 'CARDOBIS TREND%', 'RIVAROX TREND%', 'NOCLOG TREND%', 'BEMPID TREND%',
-                 'AROTIDE TREND%', 'FOBUNID TREND%']
+    trend_col = ['FFTR', 'OSTOCAL TREND%', 'SOLBION TREND%', 'XINC TREND%', 'LUMONA TREND%',
+                 'ROXIM TREND%', 'KEFUCLAV TREND%', 'DEFCORT TREND%']
 
     sales_achiv = pd.read_excel('./Data/SalesTrend/sales_achiv_trend_data.xlsx', usecols=achivment_col)
-    sales_achiv.rename(columns={'FFTR': 'FFTR', 'LIGAZID SALES ACHIV%': 'LIGAZID', 'EMAZID SALES ACHIV%': 'EMAZID',
-                                'LIPICON SALES ACHIV%': 'LIPICON', 'AGLIP SALES ACHIV%': 'AGLIP',
-                                'CIFIBET SALES ACHIV%': 'CIFIBET', 'AMLEVO SALES ACHIV%': 'AMLEVO',
-                                'CARDOBIS SALES ACHIV%': 'CARDOBIS', 'RIVAROX SALES ACHIV%': 'RIVAROX',
-                                'NOCLOG SALES ACHIV%': 'NOCLOG', 'BEMPID SALES ACHIV%': 'BEMPID',
-                                'AROTIDE SALES ACHIV%': 'AROTIDE', 'FOBUNID SALES ACHIV%': 'FOBUNID'}, inplace=True)
+    sales_achiv.rename(columns={'FFTR': 'FFTR', 'OSTOCAL SALES ACHIV%': 'OSTOCAL', 'SOLBION SALES ACHIV%': 'SOLBION',
+                                'XINC SALES ACHIV%': 'XINC', 'LUMONA SALES ACHIV%': 'LUMONA',
+                                'ROXIM SALES ACHIV%': 'ROXIM', 'KEFUCLAV SALES ACHIV%': 'KEFUCLAV',
+                                'DEFCORT SALES ACHIV%': 'DEFCORT'}, inplace=True)
 
     trend_achiv = pd.read_excel('./Data/SalesTrend/sales_achiv_trend_data.xlsx', usecols=trend_col)
-    trend_achiv.rename(columns={'FFTR': 'FFTR', 'LIGAZID TREND%': 'LIGAZID', 'EMAZID TREND%': 'EMAZID',
-                                'LIPICON TREND%': 'LIPICON', 'AGLIP TREND%': 'AGLIP', 'CIFIBET TREND%': 'CIFIBET',
-                                'AMLEVO TREND%': 'AMLEVO', 'CARDOBIS TREND%': 'CARDOBIS', 'RIVAROX TREND%': 'RIVAROX',
-                                'NOCLOG TREND%': 'NOCLOG', 'BEMPID TREND%': 'BEMPID', 'AROTIDE TREND%': 'AROTIDE',
-                                'FOBUNID TREND%': 'FOBUNID'}, inplace=True)
+    trend_achiv.rename(columns={'FFTR': 'FFTR', 'OSTOCAL TREND%': 'OSTOCAL', 'SOLBION TREND%': 'SOLBION',
+                                'XINC TREND%': 'XINC', 'LUMONA TREND%': 'LUMONA', 'ROXIM TREND%': 'ROXIM',
+                                'KEFUCLAV TREND%': 'KEFUCLAV', 'DEFCORT TREND%': 'DEFCORT', }, inplace=True)
 
     sales_achiv.to_excel("./Data/SalesAchivment/sales_achiv.xlsx", index=False)
     trend_achiv.to_excel("./Data/SalesTrend/sales_trend_data.xlsx", index=False)
@@ -169,6 +149,7 @@ def sales_achiv_trend_data():
     CSB.to_excel('./Data/SalesTrend/SalesTrend_CSB.xlsx', index=False)
     #
     print('1. Sales Achiv and Trend Data Saved')
+
 
 def seen_rx_data():
     new_seen_rx_data = pd.read_sql_query(""" 
@@ -244,6 +225,7 @@ def seen_rx_data():
     CSB = data[data['FFTR'].str.contains('CSB')]
     CSB.to_excel('./Data/SeenRx/SeenRx_CSB.xlsx', index=False)
     print('2. Seen Rx Data Saved')
+
 
 def doctor_call_data():
     doctor_call_data = pd.read_sql_query(""" 
