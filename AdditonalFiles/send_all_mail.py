@@ -17,8 +17,9 @@ def send_all_report():
     bb.all_banner()
     import AdditonalFiles.all_kpi_image as all_kpi
     import AdditonalFiles.separate_all_total_data as total
-    total.seperate_total_data()
+    # total.seperate_total_data()
     all_kpi.create_total_kpi()
+    all_kpi.all_kpi_images()
 
     # ------------ Group email ----------------------------------------
     msgRoot = MIMEMultipart('related')
@@ -31,20 +32,11 @@ def send_all_report():
     # to = ['', 'tafsir.bashar@skf.transcombd.com']
     # cc = ['', '']
     # bcc = ['yakub@transcombd.com', 'rejaul.islam@transcombd.com']
-    #
-    # #  --------  For testing purpose mail All  ---------------------------
-    # to = ['absiddique@skf.transcombd.com', 'khalid@skf.transcombd.com', 'mohammad.nasir@skf.transcombd.com',
-    #       'masrahman@skf.transcombd.com', 'rafiqul@skf.transcombd.com',
-    #       'dona.roy@skf.transcombd.com', 'm.shazzadul@skf.transcombd.com',
-    #       'mridul.baidya@skf.transcombd.com',
-    #       'obaydur@skf.transcombd.com', 'tafsir.bashar@skf.transcombd.com', 'hasan.imam@skf.transcombd.com']
-    # cc = ['', '']
-    # bcc = ['yakub@transcombd.com', 'tawhid@transcombd.com', 'zubair@transcombd.com', 'rejaul.islam@transcombd.com']
 
     recipient = to + cc + bcc
     # print('mail Sending to = ', email)
 
-    subject = "United Brand Performance"
+    subject = "Brand Performance Report "
 
     email_server_host = 'mail.transcombd.com'
     port = 25
@@ -130,28 +122,29 @@ def send_all_report():
         <img src = "cid:img1" width="900"> 
 
         <table style="width:900px">
-          <tr><th colspan='13' style=" background-color: #b2ff66; font-size: 20px; ">All: Sales Achievement % </th></tr>
+          <tr><th colspan='8' style=" background-color: #b2ff66; font-size: 20px; ">All: Sales Achievement % </th></tr>
         
                 """ + st.all_Sales_achiv_data() + """</table>
         <br>
         
         <table style="width:900px">
-        <tr><th colspan='13' style=" background-color: #b2ff66; font-size: 20px; ">All: Sales Trend % </th></tr>
+        <tr><th colspan='8' style=" background-color: #b2ff66; font-size: 20px; ">All: Sales Trend % </th></tr>
         
                 """ + st.all_Sales_table_data() + """</table>
         <br>
-        <table style="width:900px">
-        <tr><th colspan='13' style=" background-color: #b2ff66; font-size: 20px; ">All: Yesterday Seen Rx </th></tr>
+        # <table style="width:900px">
+        # <tr><th colspan='8' style=" background-color: #b2ff66; font-size: 20px; ">All: Yesterday Seen Rx </th></tr>
+        # 
         
-                """ + sr.all_seen_rx_table_data() + """</table>
-        <br>
+        # <br>
+        # 
+        # <table style="width:900px">
+        # <tr><th colspan='8' style=" background-color: #b2ff66; font-size: 20px; ">All: Yesterday Doctor Call 
+        </th></tr>
+        # 
 
-        <table style="width:900px">
-        <tr><th colspan='13' style=" background-color: #b2ff66; font-size: 20px; ">All: Yesterday Doctor Call </th></tr>
-       
-                """ + dc.all_doctor_call_table_data() + """</table>
-
-        </br> </br>
+        # 
+        # </br> </br>
     
         </body>
     
@@ -167,34 +160,34 @@ def send_all_report():
     msg.attach(msgText)
 
     # # Attached Seen Rx File
-    file_location = r"./Data/SeenRx/Seen_Rx_Data.xlsx"
-    filename = os.path.basename(file_location)
-    attachment = open(file_location, "rb")
-    part = MIMEBase('application', 'octet-stream')
-    part.set_payload(attachment.read())
-    encoders.encode_base64(part)
-    part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-    msgRoot.attach(part)
+    # file_location = r"./Data/SeenRx/Seen_Rx_Data.xlsx"
+    # filename = os.path.basename(file_location)
+    # attachment = open(file_location, "rb")
+    # part = MIMEBase('application', 'octet-stream')
+    # part.set_payload(attachment.read())
+    # encoders.encode_base64(part)
+    # part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    # msgRoot.attach(part)
 
     # # Attached Sales Trend File
-    file_location = r"./Data/SalesTrend/sales_trend_data.xlsx"
-    filename = os.path.basename(file_location)
-    attachment = open(file_location, "rb")
-    part = MIMEBase('application', 'octet-stream')
-    part.set_payload(attachment.read())
-    encoders.encode_base64(part)
-    part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-    msgRoot.attach(part)
+    # file_location = r"./Data/SalesTrend/sales_trend_data.xlsx"
+    # filename = os.path.basename(file_location)
+    # attachment = open(file_location, "rb")
+    # part = MIMEBase('application', 'octet-stream')
+    # part.set_payload(attachment.read())
+    # encoders.encode_base64(part)
+    # part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    # msgRoot.attach(part)
 
-    # # Attached Doctor Call File
-    file_location = r"./Data/Call/doctor_call_data.xlsx"
-    filename = os.path.basename(file_location)
-    attachment = open(file_location, "rb")
-    part = MIMEBase('application', 'octet-stream')
-    part.set_payload(attachment.read())
-    encoders.encode_base64(part)
-    part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-    msgRoot.attach(part)
+    # # # Attached Doctor Call File
+    # file_location = r"./Data/Call/doctor_call_data.xlsx"
+    # filename = os.path.basename(file_location)
+    # attachment = open(file_location, "rb")
+    # part = MIMEBase('application', 'octet-stream')
+    # part.set_payload(attachment.read())
+    # encoders.encode_base64(part)
+    # part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    # msgRoot.attach(part)
 
     # # ----------- Finally send mail and close server connection ---
     server = smtplib.SMTP(email_server_host, port)

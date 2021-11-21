@@ -25,7 +25,7 @@ def banner(rsm):
     font1 = ImageFont.truetype("./Font/ROCK.ttf", 35, encoding="unic")
     font2 = ImageFont.truetype("./Font/ROCK.ttf", 18, encoding="unic")
     report_name = ''
-    branch.text((25, 130), report_name + "United Brand Performance - "+str(rsm), (255, 209, 0), font=font1)
+    branch.text((25, 130), report_name + "Brand Performance Report - "+str(rsm), (255, 209, 0), font=font1)
     timestore.text((25, 175), "Upto " + day + "," + time, (255, 255, 255), font=font2)
     img.save("./Images/Banner/banner_ai_"+str(rsm)+".png")
 
@@ -55,7 +55,7 @@ def all_banner():
     report_name = ''
     #
     # tag.text((18, 8), 'SK+F', (255, 255, 255), font=font)
-    branch.text((25, 130), report_name + "United Brand Performance", (255, 209, 0), font=font1)
+    branch.text((25, 130), report_name + "Brand Performance Report", (255, 209, 0), font=font1)
     timestore.text((25, 175), "Upto " + day + "," + time, (255, 255, 255), font=font2)
     img.save("./Images/Banner/all_banner_ai.png")
 

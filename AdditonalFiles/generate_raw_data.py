@@ -5,7 +5,7 @@ import AdditonalFiles.db_connection as conn
 def sales_achiv_trend_data():
     sales_achiv_trend_df = pd.read_sql_query("""
         DECLARE @YearMonth as VARCHAR(6) = Convert (varchar,Getdate()-1,112)
-    DECLARE @This_month as CHAR(6)= CONVERT(VARCHAR(6), GETDATE()-1, 112)
+        DECLARE @This_month as CHAR(6)= CONVERT(VARCHAR(6), GETDATE()-1, 112)
         DECLARE @FIRSTDATEOFMONTH AS CHAR(8) = CONVERT(VARCHAR(6), GETDATE()-1, 112)+'01'
         DECLARE @Today as CHAR(8) = CONVERT(VARCHAR(8), GETDATE(), 112)
         DECLARE @LastDay as CHAR(8) = CONVERT(VARCHAR(8), GETDATE(), 112)-1
