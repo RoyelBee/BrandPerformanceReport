@@ -9,7 +9,7 @@ from email.mime.base import MIMEBase
 
 import AdditonalFiles.banner as bb
 import AdditonalFiles.sales_trend_table as st
-import AdditonalFiles.seen_rx_table as sr
+import AdditonalFiles.seen_rx_table as seen
 import AdditonalFiles.doctor_call_table as dc
 
 
@@ -17,7 +17,7 @@ def send_all_report():
     bb.all_banner()
     import AdditonalFiles.all_kpi_image as all_kpi
     import AdditonalFiles.separate_all_total_data as total
-    # total.seperate_total_data()
+    total.seperate_total_data()
     all_kpi.create_total_kpi()
     all_kpi.all_kpi_images()
 
@@ -135,7 +135,7 @@ def send_all_report():
         # <table style="width:900px">
         # <tr><th colspan='8' style=" background-color: #b2ff66; font-size: 20px; ">All: Yesterday Seen Rx </th></tr>
         # 
-        
+                """ + seen.all_seen_rx_table_data() + """</table>
         # <br>
         # 
         # <table style="width:900px">

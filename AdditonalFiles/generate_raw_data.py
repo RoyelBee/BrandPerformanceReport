@@ -152,78 +152,67 @@ def sales_achiv_trend_data():
 
 
 def seen_rx_data():
-    new_seen_rx_data = pd.read_sql_query(""" 
+    new_seen_rx_data = pd.read_sql_query("""     
         select * from
         (Select
-        left([FF ID],3) as [FFTR],
-        isnull(sum([LIGAZID Seen Rx]),0)  as [LIGAZID],
-        isnull(sum([EMAZID Seen Rx]),0) as [EMAZID],
-        isnull(sum([LIPICON Seen Rx]),0) as [LIPICON],
-        isnull(sum([AGLIP Seen Rx]),0) as [AGLIP],
-        isnull(sum([CIFIBET Seen Rx]),0) as [CIFIBET],
-        isnull(sum([AMLEVO Seen Rx]),0) as [AMLEVO],
-        isnull(sum([CARDOBIS Seen Rx]),0) as [CARDOBIS],
-        isnull(sum([RIVAROX Seen Rx]),0) as [RIVAROX],
-        isnull(sum([NOCLOG Seen Rx]),0) as [NOCLOG],
-        isnull(sum([BEMPID Seen Rx]),0) as [BEMPID],
-        isnull(sum([AROTIDE Seen Rx]),0) as [AROTIDE],
-        isnull(sum([FOBUNID Seen Rx]),0) as [FOBUNID]
-        
-        from v_LastDay_SeenRx
-        where [FF ID]  = left([FF ID],4)+'0' --and left([FF ID],3) like '%CBU%'
-        group by left([FF ID],3)
-        
+        left([FF ID],2) as [FFTR],
+        isnull(sum([OSTOCAL Seen Rx]),0)  as [OSTOCAL],
+        isnull(sum([SOLBION Seen Rx]),0)  as [SOLBION],
+        isnull(sum([XINC Seen Rx]),0)  as [XINC],
+        isnull(sum([LUMONA Seen Rx]),0)  as [LUMONA],
+        isnull(sum([ROXIM Seen Rx]),0)  as [ROXIM],
+        isnull(sum([KEFUCLAV Seen Rx]),0)  as [KEFUCLAV],
+        isnull(sum([DEFCORT Seen Rx]),0)  as [DEFCORT]
+                
+        from v_LastDay_SeenRxAB
+        group by left([FF ID],2)
+                
         union all
-        
+                
         Select [FF ID],
-        isnull([LIGAZID Seen Rx],0) as [LIGAZID Seen Rx],
-        isnull([EMAZID Seen Rx],0) as [EMAZID Seen Rx],
-        ISNULL([LIPICON Seen Rx], 0) as [LIPICON Seen Rx],
-        ISNULL([AGLIP Seen Rx], 0) as [AGLIP Seen Rx],
-        ISNULL([CIFIBET Seen Rx], 0) as [CIFIBET Seen Rx],
-        ISNULL([AMLEVO Seen Rx], 0) as [AMLEVO Seen Rx],
-        ISNULL([CARDOBIS Seen Rx], 0) as [CARDOBIS Seen Rx],
-        ISNULL([RIVAROX Seen Rx], 0) as [RIVAROX Seen Rx],
-        ISNULL([NOCLOG Seen Rx], 0) as [NOCLOG Seen Rx],
-        ISNULL([BEMPID Seen Rx], 0) as [BEMPID Seen Rx],
-        ISNULL([AROTIDE Seen Rx], 0) as [AROTIDE Seen Rx],
-        ISNULL([FOBUNID Seen Rx], 0) as [FOBUNID Seen Rx]
-        from v_LastDay_SeenRx --where  left([FF ID],3) like '%CBU%'
-        
-        ) as T1
+        isnull([OSTOCAL Seen Rx],0) as [OSTOCAL Seen Rx],
+        isnull([SOLBION Seen Rx],0) as [SOLBION Seen Rx],
+        isnull([XINC Seen Rx],0) as [XINC Seen Rx],
+        isnull([LUMONA Seen Rx],0) as [LUMONA Seen Rx],
+        isnull([ROXIM Seen Rx],0) as [ROXIM Seen Rx],
+        isnull([KEFUCLAV Seen Rx],0) as [KEFUCLAV Seen Rx],
+        isnull([DEFCORT Seen Rx],0) as [DEFCORT Seen Rx]
+              
+        from v_LastDay_SeenRxAB ) as T1
+        where [FFTR] not in ('IN', 'INST')
         order by [FFTR] asc
+
 
      """, conn.m_reporting)
     new_seen_rx_data.to_excel("./Data/SeenRx/Seen_Rx_Data.xlsx", index=False)
+    # data = pd.read_excel('./Data/SeenRx/Seen_Rx_Data.xlsx')
 
-    data = pd.read_excel('./Data/SeenRx/Seen_Rx_Data.xlsx')
-
-    CBU = data[data['FFTR'].str.contains('CBU')]
-    CBU.to_excel('./Data/SeenRx/SeenRx_CBU.xlsx', index=False)
-
-    CCF = data[data['FFTR'].str.contains('CCF')]
-    CCF.to_excel('./Data/SeenRx/SeenRx_CCF.xlsx', index=False)
-
-    CCX = data[data['FFTR'].str.contains('CCX')]
-    CCX.to_excel('./Data/SeenRx/SeenRx_CCX.xlsx', index=False)
-
-    CNH = data[data['FFTR'].str.contains('CNH')]
-    CNH.to_excel('./Data/SeenRx/SeenRx_CNH.xlsx', index=False)
-
-    CKJ = data[data['FFTR'].str.contains('CKJ')]
-    CKJ.to_excel('./Data/SeenRx/SeenRx_CKJ.xlsx', index=False)
-
-    CMT = data[data['FFTR'].str.contains('CMT')]
-    CMT.to_excel('./Data/SeenRx/SeenRx_CMT.xlsx', index=False)
-
-    CRB = data[data['FFTR'].str.contains('CRB')]
-    CRB.to_excel('./Data/SeenRx/SeenRx_CRB.xlsx', index=False)
-
-    CRP = data[data['FFTR'].str.contains('CRP')]
-    CRP.to_excel('./Data/SeenRx/SeenRx_CRP.xlsx', index=False)
-
-    CSB = data[data['FFTR'].str.contains('CSB')]
-    CSB.to_excel('./Data/SeenRx/SeenRx_CSB.xlsx', index=False)
+    # CBU = data[data['FFTR'].str.contains('CBU')]
+    # CBU.to_excel('./Data/SeenRx/SeenRx_CBU.xlsx', index=False)
+    #
+    # CCF = data[data['FFTR'].str.contains('CCF')]
+    # CCF.to_excel('./Data/SeenRx/SeenRx_CCF.xlsx', index=False)
+    #
+    # CCX = data[data['FFTR'].str.contains('CCX')]
+    # CCX.to_excel('./Data/SeenRx/SeenRx_CCX.xlsx', index=False)
+    #
+    # CNH = data[data['FFTR'].str.contains('CNH')]
+    # CNH.to_excel('./Data/SeenRx/SeenRx_CNH.xlsx', index=False)
+    #
+    # CKJ = data[data['FFTR'].str.contains('CKJ')]
+    # CKJ.to_excel('./Data/SeenRx/SeenRx_CKJ.xlsx', index=False)
+    #
+    # CMT = data[data['FFTR'].str.contains('CMT')]
+    # CMT.to_excel('./Data/SeenRx/SeenRx_CMT.xlsx', index=False)
+    #
+    # CRB = data[data['FFTR'].str.contains('CRB')]
+    # CRB.to_excel('./Data/SeenRx/SeenRx_CRB.xlsx', index=False)
+    #
+    # CRP = data[data['FFTR'].str.contains('CRP')]
+    # CRP.to_excel('./Data/SeenRx/SeenRx_CRP.xlsx', index=False)
+    #
+    # CSB = data[data['FFTR'].str.contains('CSB')]
+    # CSB.to_excel('./Data/SeenRx/SeenRx_CSB.xlsx', index=False)
     print('2. Seen Rx Data Saved')
 
 

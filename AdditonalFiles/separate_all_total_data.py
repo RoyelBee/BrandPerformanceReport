@@ -10,8 +10,8 @@ def seperate_total_data():
     seen_df.to_csv('./Data/SeenRx/rsm_seen_total.csv', index=False)
 
     # # separate total doctor call data
-    call_df = pd.read_excel('./Data/Call/doctor_call_data.xlsx')
-    call_df['FFTR'] = call_df['FFTR'].astype('str')
-    mask_call = (call_df['FFTR'].str.len() < 4)
-    call_df = call_df.loc[mask_call]
-    call_df.to_csv('./Data/Call/rsm_call_total.csv', index=False)
+    # call_df = pd.read_excel('./Data/Call/doctor_call_data.xlsx')
+    # call_df['FFTR'] = call_df['FFTR'].astype('str')
+    # mask_call = (call_df['FFTR'].str.len() < 4)
+    # call_df = call_df.loc[mask_call]
+    # call_df.to_csv('./Data/Call/rsm_call_total.csv', index=False)

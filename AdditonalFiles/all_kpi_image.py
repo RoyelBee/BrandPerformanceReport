@@ -67,24 +67,19 @@ def create_total_kpi():
         trend_percent = 0
 
     # # # ------------------------- Seen Rx -----------------------------------
-    # seen_df = pd.read_csv('./Data/SeenRx/rsm_seen_total.csv')
-    # LIGAZID_seen = sum(seen_df.LIGAZID.tolist())
-    # EMAZID_seen = sum(seen_df.EMAZID.tolist())
-    # LIPICON_seen = sum(seen_df.LIPICON.tolist())
-    # AGLIP_seen = sum(seen_df.AGLIP.tolist())
-    # CIFIBET_seen = sum(seen_df.CIFIBET.tolist())
-    # AMLEVO_seen = sum(seen_df.AMLEVO.tolist())
-    # CARDOBIS_seen = sum(seen_df.CARDOBIS.tolist())
-    # RIVAROX_seen = sum(seen_df.RIVAROX.tolist())
-    # NOCLOG_seen = sum(seen_df.NOCLOG.tolist())
-    # BEMPID_seen = sum(seen_df.BEMPID.tolist())
-    # AROTIDE_seen = sum(seen_df.AROTIDE.tolist())
-    # FOBUNID_seen = sum(seen_df.FOBUNID.tolist())
-    # all_seenrx = int(sum([LIGAZID_seen, EMAZID_seen, LIPICON_seen, AGLIP_seen, CIFIBET_seen,
-    #                       AMLEVO_seen, CARDOBIS_seen, RIVAROX_seen, NOCLOG_seen, BEMPID_seen, AROTIDE_seen,
-    #                       FOBUNID_seen]))
-    #
-    # # # ---------------------- Doctor Call -----------------------------
+    seen_df = pd.read_csv('./Data/SeenRx/rsm_seen_total.csv')
+    OSTOCAL_seen = sum(seen_df.OSTOCAL.tolist())
+    SOLBION_seen = sum(seen_df.SOLBION.tolist())
+    XINC_seen = sum(seen_df.XINC.tolist())
+    LUMONA_seen = sum(seen_df.LUMONA.tolist())
+    ROXIM_seen = sum(seen_df.ROXIM.tolist())
+    KEFUCLAV_seen = sum(seen_df.KEFUCLAV.tolist())
+    DEFCORT_seen = sum(seen_df.DEFCORT.tolist())
+
+    all_seenrx = int(sum([OSTOCAL_seen, SOLBION_seen, XINC_seen, LUMONA_seen, ROXIM_seen,
+                          KEFUCLAV_seen, DEFCORT_seen]))
+
+    # # ---------------------- Doctor Call -----------------------------
     # call_df = pd.read_csv('./Data/Call/rsm_call_total.csv')
     # LIGAZID_call = sum(call_df.LIGAZID.tolist())
     # EMAZID_call = sum(call_df.EMAZID.tolist())
@@ -103,9 +98,9 @@ def create_total_kpi():
     #                     FOBUNID_call]))
 
     img_draw.text((130, 10), '(' + str(day) + ')', (255, 255, 255), f)
-    img_draw.text((90, 120), number_decorator(sales_achivPercent) + '%', (0, 0, 0), font)
-    img_draw.text((410, 120), number_decorator(trend_percent) + '%', (0, 0, 0), font)
-    # img_draw.text((730, 120), number_decorator(all_seenrx), (0, 0, 0), font)
+    img_draw.text((90, 110), number_decorator(sales_achivPercent) + '%', (0, 0, 0), font)
+    img_draw.text((410, 110), number_decorator(trend_percent) + '%', (0, 0, 0), font)
+    img_draw.text((730, 110), number_decorator(all_seenrx), (0, 0, 0), font)
     # img_draw.text((1020, 120), number_decorator(all_call), (0, 0, 0), font)
 
     img.save("./Images/total_kpi_images.png")
@@ -165,7 +160,7 @@ def create_rsm_total_kpi(rsm):
     img_draw.text((130, 22), '(' + str(day) + ')', (255, 255, 255), f)
     img_draw.text((90, 120), number_decorator(sales_achivPercent) + '%', (0, 0, 0), font)
     img_draw.text((410, 120), number_decorator(trend_percent) + '%', (0, 0, 0), font)
-    img_draw.text((750, 120), number_decorator(total_seenrx), (0, 0, 0), font)
+    img_draw.text((750, 90), number_decorator(total_seenrx), (0, 0, 0), font)
     img_draw.text((1050, 120), number_decorator(total_call), (0, 0, 0), font)
 
     img.save("./Images/" + str(rsm) + "_total_kpi_images.png")
@@ -214,33 +209,25 @@ def all_kpi_images():
     img_draw.text((1030, 190), number_decorator(DEFCORT_trend) + '%', (0, 0, 0), font1)
 
     # # ------------------------------ Seen Rx ----------------------------------------
-    # seen_rx = pd.read_excel('./Data/SeenRx/Seen_Rx_Data.xlsx')
-    # LIGZID_rx = seen_rx.LIGAZID.tolist()[0]
-    # EMAZID_rx = seen_rx.EMAZID.tolist()[0]
-    # LIPICON_rx = seen_rx.LIPICON.tolist()[0]
-    # AGLIP_rx = seen_rx.AGLIP.tolist()[0]
-    # CIFIBET_rx = seen_rx.CIFIBET.tolist()[0]
-    # AMLEVO_rx = seen_rx.AMLEVO.tolist()[0]
-    # CARDOBIS_rx = seen_rx.CARDOBIS.tolist()[0]
-    # RIVAROX_rx = seen_rx.RIVAROX.tolist()[0]
-    # NOCLOG_rx = seen_rx.NOCLOG.tolist()[0]
-    # BEMPID_rx = seen_rx.BEMPID.tolist()[0]
-    # AROTIDE_rx = seen_rx.AROTIDE.tolist()[0]
-    # FOBUNID_rx = seen_rx.FOBUNID.tolist()[0]
-    #
-    # img_draw.text((120, 247), '(' + str(day) + ')', (255, 255, 255), font)
-    # img_draw.text((40, 325), number_decorator(LIGZID_rx), (0, 0, 0), font1)
-    # img_draw.text((135, 325), number_decorator(EMAZID_rx), (0, 0, 0), font1)
-    # img_draw.text((235, 325), number_decorator(LIPICON_rx), (0, 0, 0), font1)
-    # img_draw.text((335, 325), number_decorator(AGLIP_rx), (0, 0, 0), font1)
-    # img_draw.text((435, 325), number_decorator(CIFIBET_rx), (0, 0, 0), font1)
-    # img_draw.text((535, 325), number_decorator(AMLEVO_rx), (0, 0, 0), font1)
-    # img_draw.text((635, 325), number_decorator(CARDOBIS_rx), (0, 0, 0), font1)
-    # img_draw.text((735, 325), number_decorator(RIVAROX_rx), (0, 0, 0), font1)
-    # img_draw.text((835, 325), number_decorator(NOCLOG_rx), (0, 0, 0), font1)
-    # img_draw.text((935, 325), number_decorator(BEMPID_rx), (0, 0, 0), font1)
-    # img_draw.text((1035, 325), number_decorator(AROTIDE_rx), (0, 0, 0), font1)
-    # img_draw.text((1135, 325), number_decorator(FOBUNID_rx), (0, 0, 0), font1)
+    seen_rx = pd.read_csv('./Data/SeenRx/rsm_seen_total.csv')
+    OSTOCAL_seen = sum(seen_rx.OSTOCAL.tolist())
+    SOLBION_seen = sum(seen_rx.SOLBION.tolist())
+    XINC_seen = sum(seen_rx.XINC.tolist())
+    LUMONA_seen = sum(seen_rx.LUMONA.tolist())
+    ROXIM_seen = sum(seen_rx.ROXIM.tolist())
+    KEFUCLAV_seen = sum(seen_rx.KEFUCLAV.tolist())
+    DEFCORT_seen = sum(seen_rx.DEFCORT.tolist())
+
+    img_draw.text((120, 240), '(' + str(day) + ')', (255, 255, 255), font)
+    img_draw.text((60, 315), number_decorator(OSTOCAL_seen), (0, 0, 0), font1)
+    img_draw.text((210, 315), number_decorator(SOLBION_seen), (0, 0, 0), font1)
+    img_draw.text((375, 315), number_decorator(XINC_seen), (0, 0, 0), font1)
+    img_draw.text((530, 315), number_decorator(LUMONA_seen), (0, 0, 0), font1)
+    img_draw.text((690, 315), number_decorator(ROXIM_seen), (0, 0, 0), font1)
+    img_draw.text((845, 315), number_decorator(KEFUCLAV_seen), (0, 0, 0), font1)
+    img_draw.text((1030, 315), number_decorator(DEFCORT_seen), (0, 0, 0), font1)
+
+
     #
     # # # ------------------------------ Doctor Call -----------------------------------
     # doctor_call = pd.read_excel('./Data/Call/doctor_call_data.xlsx')
