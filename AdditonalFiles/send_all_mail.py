@@ -25,13 +25,13 @@ def send_all_report():
     msgRoot = MIMEMultipart('related')
     me = 'erp-bi.service@transcombd.com'
 
-    to = ['', 'rejaul.islam@transcombd.com']
+    # to = ['rubaead@skf.transcombd.com', '']  #
+    # cc = ['', '']
+    # bcc = ['yakub@transcombd.com', 'tawhid@transcombd.com', 'rejaul.islam@transcombd.com', 'naznin.mitu@transcombd.com']
+
+    to = ['rejaul.islam@transcombd.com', '']
     cc = ['', '']
     bcc = ['', '']
-
-    # to = ['', 'tafsir.bashar@skf.transcombd.com']
-    # cc = ['', '']
-    # bcc = ['yakub@transcombd.com', 'rejaul.islam@transcombd.com']
 
     recipient = to + cc + bcc
     # print('mail Sending to = ', email)
@@ -122,29 +122,29 @@ def send_all_report():
         <img src = "cid:img1" width="900"> 
 
         <table style="width:900px">
-          <tr><th colspan='8' style=" background-color: #b2ff66; font-size: 20px; ">All: Sales Achievement % </th></tr>
+          <tr><th colspan='12' style=" background-color: #b2ff66; font-size: 20px; ">All: Sales Achievement % </th></tr>
         
                 """ + st.all_Sales_achiv_data() + """</table>
         <br>
         
         <table style="width:900px">
-        <tr><th colspan='8' style=" background-color: #b2ff66; font-size: 20px; ">All: Sales Trend % </th></tr>
+        <tr><th colspan='12' style=" background-color: #b2ff66; font-size: 20px; ">All: Sales Trend % </th></tr>
         
                 """ + st.all_Sales_table_data() + """</table>
         <br>
-        # <table style="width:900px">
-        # <tr><th colspan='8' style=" background-color: #b2ff66; font-size: 20px; ">All: Yesterday Seen Rx </th></tr>
-        # 
+        <table style="width:900px">
+         <tr><th colspan='12' style=" background-color: #b2ff66; font-size: 20px; ">All: Yesterday Seen Rx </th></tr>
+         
                 """ + seen.all_seen_rx_table_data() + """</table>
-        # <br>
-        # 
-        # <table style="width:900px">
-        # <tr><th colspan='8' style=" background-color: #b2ff66; font-size: 20px; ">All: Yesterday Doctor Call 
+         <br>
+         
+         <table style="width:900px">
+        <tr><th colspan='12' style=" background-color: #b2ff66; font-size: 20px; ">All: Yesterday Doctor Call 
         </th></tr>
-        # 
+                """ + dc.all_doctor_call_table_data() + """</table> 
 
-        # 
-        # </br> </br>
+         
+        </br> </br>
     
         </body>
     
@@ -159,35 +159,45 @@ def send_all_report():
 
     msg.attach(msgText)
 
-    # # Attached Seen Rx File
-    # file_location = r"./Data/SeenRx/Seen_Rx_Data.xlsx"
-    # filename = os.path.basename(file_location)
-    # attachment = open(file_location, "rb")
-    # part = MIMEBase('application', 'octet-stream')
-    # part.set_payload(attachment.read())
-    # encoders.encode_base64(part)
-    # part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-    # msgRoot.attach(part)
+    # Attached Sales Achive File
+    file_location = r"./Data/SalesAchivment/sales_achiv.xlsx"
+    filename = os.path.basename(file_location)
+    attachment = open(file_location, "rb")
+    part = MIMEBase('application', 'octet-stream')
+    part.set_payload(attachment.read())
+    encoders.encode_base64(part)
+    part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    msgRoot.attach(part)
 
-    # # Attached Sales Trend File
-    # file_location = r"./Data/SalesTrend/sales_trend_data.xlsx"
-    # filename = os.path.basename(file_location)
-    # attachment = open(file_location, "rb")
-    # part = MIMEBase('application', 'octet-stream')
-    # part.set_payload(attachment.read())
-    # encoders.encode_base64(part)
-    # part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-    # msgRoot.attach(part)
+    # Attached Sales Trend File
+    file_location = r"./Data/SalesTrend/sales_trend_data.xlsx"
+    filename = os.path.basename(file_location)
+    attachment = open(file_location, "rb")
+    part = MIMEBase('application', 'octet-stream')
+    part.set_payload(attachment.read())
+    encoders.encode_base64(part)
+    part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    msgRoot.attach(part)
 
-    # # # Attached Doctor Call File
-    # file_location = r"./Data/Call/doctor_call_data.xlsx"
-    # filename = os.path.basename(file_location)
-    # attachment = open(file_location, "rb")
-    # part = MIMEBase('application', 'octet-stream')
-    # part.set_payload(attachment.read())
-    # encoders.encode_base64(part)
-    # part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-    # msgRoot.attach(part)
+    # Attached Seen Rx File
+    file_location = r"./Data/SeenRx/Seen_Rx_Data.xlsx"
+    filename = os.path.basename(file_location)
+    attachment = open(file_location, "rb")
+    part = MIMEBase('application', 'octet-stream')
+    part.set_payload(attachment.read())
+    encoders.encode_base64(part)
+    part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    msgRoot.attach(part)
+
+    # # Attached Doctor Call File
+    file_location = r"./Data/Call/doctor_call_data.xlsx"
+    filename = os.path.basename(file_location)
+    attachment = open(file_location, "rb")
+    part = MIMEBase('application', 'octet-stream')
+    part.set_payload(attachment.read())
+    encoders.encode_base64(part)
+    part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    msgRoot.attach(part)
 
     # # ----------- Finally send mail and close server connection ---
     server = smtplib.SMTP(email_server_host, port)
